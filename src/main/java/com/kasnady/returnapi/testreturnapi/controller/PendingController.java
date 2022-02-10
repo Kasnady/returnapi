@@ -6,7 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,7 @@ import com.kasnady.returnapi.testreturnapi.entity.Order;
 import com.kasnady.returnapi.testreturnapi.exception.ServiceClientException;
 import com.kasnady.returnapi.testreturnapi.repository.OrderRepository;
 import com.kasnady.returnapi.testreturnapi.request.bean.PendingOrderRequestBean;
-import com.kasnady.returnapi.testreturnapi.service.impl.OrderServiceImpl;
+import com.kasnady.returnapi.testreturnapi.service.OrderService;
 
 @RestController
 @RequestMapping(path = "/pending", consumes = "application/json", produces = "application/json")
@@ -27,7 +26,7 @@ public class PendingController extends BaseController {
 	@Autowired
 	OrderRepository orderRepo;
 	@Autowired
-	OrderServiceImpl orderService;
+	OrderService orderService;
 
 	/**
 	 * Generate Token to be use for creating return transaction

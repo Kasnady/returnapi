@@ -10,7 +10,9 @@ public interface ReturnOrderRepository extends CrudRepository<ReturnOrder, Long>
 
 	public boolean existsByReturnToken(String returnToken);
 
+	public List<ReturnOrder> findByReturnToken(String returnToken);
+
 	public ReturnOrder findOneByOrderIdAndSku(String orderId, String sku);
 
-	public List<ReturnOrder> findByReturnToken(String returnToken);
+	public ReturnOrder findOneByIdAndReturnToken(Long id, String returnToken);
 }

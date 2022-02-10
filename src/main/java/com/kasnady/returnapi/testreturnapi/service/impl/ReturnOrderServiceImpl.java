@@ -2,6 +2,7 @@ package com.kasnady.returnapi.testreturnapi.service.impl;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -47,7 +48,6 @@ public class ReturnOrderServiceImpl implements ReturnOrderService {
 			throws ServiceClientException {
 		// Check whether token ever used
 		if (returnOrderRepo.existsByReturnToken(oReturnToken.getReturnToken())) {
-//		if (Double.compare(oReturnToken.getTotalAmount(), 0) > 0) {
 			throw new ServiceClientException("Please request a new Return Token!");
 		}
 
@@ -168,5 +168,33 @@ public class ReturnOrderServiceImpl implements ReturnOrderService {
 		logger.info("AK# Load return order status called!");
 		List<ReturnStatus> statuses = ReturnStatus.getStatuses();
 		returnStatusRepo.saveAll(statuses);
+	}
+
+	/**
+	 * Update Return Order
+	 * 
+	 * @param id
+	 * @param returnToken
+	 * @param statusId
+	 * @return
+	 * @throws ServiceClientException
+	 */
+	public boolean updateReturnOrder(Long id, String returnToken, int statusId) throws ServiceClientException {
+		Optional<ReturnStatus> rs = returnStatusRepo.findById(statusId);
+		if (rs.isEmpty()) {
+			logger.error("Return Status not found! Unable to update");
+			throw new ServiceClientException("Return Status not found! Unable to update");
+		}
+
+		ReturnOrder ro = returnOrderRepo.findOneByIdAndReturnToken(id, returnToken);
+		if (ro == null) {
+			logger.error("Return Order not found! Unable to update");
+			throw new ServiceClientException("Return Order not found! Unable to update");
+		}
+
+		ro.setReturnStatus(rs.get());
+		returnOrderRepo.save(ro);
+
+		return true;
 	}
 }
