@@ -33,8 +33,13 @@ public class ReturnController extends BaseController {
 	@Autowired
 	ReturnOrderServiceImpl returnOrderService;
 
+	/**
+	 * Validate request for create return transaction
+	 * 
+	 * @param returnReqBean
+	 * @throws ServiceClientException
+	 */
 	private void validateCreateReturnTxn(CreateReturnRequestBean returnReqBean) throws ServiceClientException {
-
 		// Validate is Order empty
 		if (returnReqBean.getOrders() == null || returnReqBean.getOrders().isEmpty()) {
 			throw new ServiceClientException("Return Orders empty!");
@@ -78,11 +83,6 @@ public class ReturnController extends BaseController {
 			}
 			logger.info("Return token recognized! In record OrderID: {} Email: {} Amount: {}",
 					oReturnToken.getOrderId(), oReturnToken.getEmail(), oReturnToken.getTotalAmount());
-
-			// Check whether token ever used
-			if (Double.compare(oReturnToken.getTotalAmount(), 0) > 0) {
-				throw new ServiceClientException("Please request a new Return Token!");
-			}
 
 			oReturnToken = returnOrderService.createReturnOrderAndGetSummary(oReturnToken, returnReqBean.getOrders());
 			return succeedResponse(JsonUtil.gson.toJson(oReturnToken));

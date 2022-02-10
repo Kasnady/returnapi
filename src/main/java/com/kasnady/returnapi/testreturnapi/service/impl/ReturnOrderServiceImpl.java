@@ -34,18 +34,31 @@ public class ReturnOrderServiceImpl implements ReturnOrderService {
 	@Autowired
 	ReturnStatusRepository returnStatusRepo;
 
+	/**
+	 * Create Return Orders & get their summary of refund amount based on return qty
+	 * * item price
+	 * 
+	 * @param oReturnToken
+	 * @param orders
+	 * @return
+	 * @throws ServiceClientException
+	 */
 	public OrderReturnToken createReturnOrderAndGetSummary(OrderReturnToken oReturnToken, List<Order> orders)
 			throws ServiceClientException {
+		// Check whether token ever used
+		if (returnOrderRepo.existsByReturnToken(oReturnToken.getReturnToken())) {
+//		if (Double.compare(oReturnToken.getTotalAmount(), 0) > 0) {
+			throw new ServiceClientException("Please request a new Return Token!");
+		}
+
 		List<ReturnOrder> returnOrders = this.createReturnOrders(oReturnToken, orders);
 		if (returnOrders.isEmpty()) {
 			throw new ServiceClientException("Provided orders invalid!");
 		}
 		logger.info("Calculate summary of return order for ReturnToken: {}", oReturnToken.getReturnToken());
 
-		double summary = returnOrders.stream().mapToDouble(ro -> ro.getQuantity() * ro.getPrice()).sum();
-
+		double summary = this.getReturnOrderRefundAmount(returnOrders);
 		oReturnToken.setTotalAmount(summary);
-		orderReturnTokenRepo.save(oReturnToken);
 		logger.info("ReturnToken: {} saved with summary amount: {}", oReturnToken.getReturnToken(),
 				oReturnToken.getTotalAmount());
 		oReturnToken.setReturnOrders(returnOrders);
@@ -110,6 +123,21 @@ public class ReturnOrderServiceImpl implements ReturnOrderService {
 			returnOrderRepo.saveAll(returnOrders);
 		}
 		return returnOrders;
+	}
+
+	/**
+	 * Get refund amount for all return orders
+	 * 
+	 * @param returnOrders
+	 * @return
+	 */
+	public double getReturnOrderRefundAmount(List<ReturnOrder> returnOrders) {
+		if (returnOrders == null || returnOrders.isEmpty())
+			return 0;
+
+		return returnOrders.stream().mapToDouble(
+				ro -> ro.getReturnStatus().getId().equals(ReturnStatus.REJECTED) ? 0 : ro.getQuantity() * ro.getPrice())
+				.sum();
 	}
 
 	/**

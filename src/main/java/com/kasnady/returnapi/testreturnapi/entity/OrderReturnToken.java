@@ -28,13 +28,13 @@ public class OrderReturnToken {
 	private String email;
 	@Column(nullable = false)
 	private String returnToken;
-	@Column
-	private double totalAmount;
 	@CreationTimestamp
 	private LocalDateTime createdAt;
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
 
+	@Transient
+	private double totalAmount;
 	@Transient
 	private List<ReturnOrder> returnOrders;
 
