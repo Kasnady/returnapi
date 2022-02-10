@@ -1,0 +1,144 @@
+{
+	"info": {
+		"_postman_id": "804b2910-d7e4-4b82-a09d-3bd2ad9f9489",
+		"name": "Return API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Get Pending Return Token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"orderId\": \"RK-478\", \"email\": \"john@example.com\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/pending/returns",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"pending",
+						"returns"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. Create Return Order",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"returnToken\": \"27117476-55f6-49ba-bdbc-4bed36b7f2b1\",\r\n    \"orders\": [\r\n        {\r\n            \"orderId\": \"RK-478\",\r\n            \"email\": \"john@example.com\",\r\n            \"sku\": \"MENS-156\",\r\n            \"quantity\": 2\r\n        },\r\n        {\r\n            \"orderId\": \"RK-478\",\r\n            \"email\": \"john@example.com\",\r\n            \"sku\": \"SOC-1\",\r\n            \"quantity\": 100\r\n        },\r\n        {\r\n            \"orderId\": \"RK-478\",\r\n            \"email\": \"john@example.com\",\r\n            \"sku\": \"NIKE-7\",\r\n            \"quantity\": 1\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/returns/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"returns",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Get Created Return Order",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/returns/27117476-55f6-49ba-bdbc-4bed36b7f2b1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"returns",
+						"27117476-55f6-49ba-bdbc-4bed36b7f2b1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Update Return Order",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"statusId\": 2}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/returns/27117476-55f6-49ba-bdbc-4bed36b7f2b1/items/6/qc/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"returns",
+						"27117476-55f6-49ba-bdbc-4bed36b7f2b1",
+						"items",
+						"6",
+						"qc",
+						"status"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
