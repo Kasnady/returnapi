@@ -4,10 +4,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="orders")
+@Table(name = "orders", indexes = { @Index(columnList = "orderId,sku"), @Index(columnList = "orderId,email") })
 @IdClass(OrderKey.class)
 public class Order {
 	@Id

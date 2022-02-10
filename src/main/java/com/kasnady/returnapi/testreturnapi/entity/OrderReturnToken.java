@@ -1,17 +1,23 @@
 package com.kasnady.returnapi.testreturnapi.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.Index;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "order_return_tokens")
+@Table(name = "order_return_tokens", uniqueConstraints = @UniqueConstraint(columnNames = { "returnToken" }), indexes = {
+		@Index(columnList = "returnToken") })
 @IdClass(OrderReturnTokenId.class)
 public class OrderReturnToken {
 	@Id
@@ -22,10 +28,15 @@ public class OrderReturnToken {
 	private String email;
 	@Column(nullable = false)
 	private String returnToken;
+	@Column
+	private double totalAmount;
 	@CreationTimestamp
 	private LocalDateTime createdAt;
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
+
+	@Transient
+	private List<ReturnOrder> returnOrders;
 
 	public OrderReturnToken() {
 		super();
@@ -61,6 +72,14 @@ public class OrderReturnToken {
 		this.returnToken = returnToken;
 	}
 
+	public double getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(double totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
@@ -75,5 +94,13 @@ public class OrderReturnToken {
 
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public List<ReturnOrder> getReturnOrders() {
+		return returnOrders;
+	}
+
+	public void setReturnOrders(List<ReturnOrder> returnOrders) {
+		this.returnOrders = returnOrders;
 	}
 }

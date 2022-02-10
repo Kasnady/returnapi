@@ -7,5 +7,5 @@ import com.kasnady.returnapi.testreturnapi.entity.OrderReturnTokenId;
 
 public interface OrderReturnTokenRepository extends CrudRepository<OrderReturnToken, OrderReturnTokenId> {
 
-	public OrderReturnToken findOneByOrderIdAndEmail(String orderId, String email);
+	public OrderReturnToken findOneByReturnToken(String returnToken);
 }

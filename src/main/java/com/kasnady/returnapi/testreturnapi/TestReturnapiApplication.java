@@ -8,14 +8,15 @@ import org.springframework.context.annotation.Bean;
 
 import com.kasnady.returnapi.testreturnapi.repository.OrderRepository;
 import com.kasnady.returnapi.testreturnapi.service.impl.OrderServiceImpl;
+import com.kasnady.returnapi.testreturnapi.service.impl.ReturnOrderServiceImpl;
 
 @SpringBootApplication
 public class TestReturnapiApplication {
 
 	@Autowired
-	OrderRepository orderRepo;
-	@Autowired
 	OrderServiceImpl orderService;
+	@Autowired
+	ReturnOrderServiceImpl returnOrderService;
 
 	public static void main(String[] args) {
 		// Start Application
@@ -24,8 +25,11 @@ public class TestReturnapiApplication {
 
 	@Bean
 	public CommandLineRunner orderRepoRunner(OrderRepository repository) {
-		return (args) ->
-		// Load initial orders from CSV
-		orderService.loadOrders();
+		return args -> {
+			// initiate return status
+			returnOrderService.loadStatus();
+			// Load initial orders from CSV
+			orderService.loadOrders();
+		};
 	}
 }

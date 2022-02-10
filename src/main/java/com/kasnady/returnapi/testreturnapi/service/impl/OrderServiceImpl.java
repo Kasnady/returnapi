@@ -31,18 +31,17 @@ public class OrderServiceImpl implements OrderService {
 	OrderReturnTokenRepository orderReturnTokenRepo;
 
 	/**
-	 * Generate Token for OrderID & Email to use later on for creating return transaction
+	 * Generate Token for OrderID & Email to use later on for creating return
+	 * transaction
+	 * 
+	 * @param orderId
+	 * @param email
+	 * @return
 	 */
 	public String generateToken(String orderId, String email) {
-		// Check whether token had been generated
-		OrderReturnToken oToken = orderReturnTokenRepo.findOneByOrderIdAndEmail(orderId, email);
 		// Generate token
 		String token = UUID.randomUUID().toString();
-		if (oToken == null) {
-			oToken = new OrderReturnToken(orderId, email, token);
-		} else {
-			oToken.setReturnToken(token);
-		}
+		OrderReturnToken oToken = new OrderReturnToken(orderId, email, token);
 		orderReturnTokenRepo.save(oToken);
 
 		logger.info("Generated token: {} for OrderId: {} Email: {}", token, orderId, email);

@@ -38,8 +38,7 @@ public class PendingController extends BaseController {
 	 * @return
 	 */
 	@PostMapping(value = "/returns")
-	public ResponseEntity<Object> generatePendingReturnToken(@RequestBody PendingOrderRequestBean pendingOrderReq,
-			Model model) {
+	public ResponseEntity<Object> generatePendingReturnToken(@RequestBody PendingOrderRequestBean pendingOrderReq) {
 		logger.info("Pending return called with OrderID: {} Email: {}", pendingOrderReq.getOrderId(),
 				pendingOrderReq.getEmail());
 

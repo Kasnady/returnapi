@@ -11,14 +11,24 @@ public class BaseController {
 	final Logger log = LogManager.getLogger(BaseController.class);
 
 	/**
-	 * Succeed response
+	 * Succeed response with String
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	public ResponseEntity<Object> succeedResponse(String response) {
+		log.info("Succeed response: {}", response);
+		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
+	}
+
+	/**
+	 * Succeed response with JsonObject
 	 * 
 	 * @param obj
 	 * @return
 	 */
 	public ResponseEntity<Object> succeedResponse(JsonObject obj) {
-		log.info("Succeed response: {}", obj);
-		return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(obj.toString());
+		return this.succeedResponse(obj.toString());
 	}
 
 	/**

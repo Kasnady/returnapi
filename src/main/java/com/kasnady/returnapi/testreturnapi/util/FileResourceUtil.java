@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 
 public class FileResourceUtil {
+
 	/**
 	 * Get File from Resources folder as Stream
 	 * 
