@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.JsonObject;
 import com.kasnady.returnapi.testreturnapi.entity.OrderReturnToken;
+import com.kasnady.returnapi.testreturnapi.entity.ReturnStatus;
 import com.kasnady.returnapi.testreturnapi.exception.ServiceClientException;
 import com.kasnady.returnapi.testreturnapi.repository.OrderReturnTokenRepository;
 import com.kasnady.returnapi.testreturnapi.request.bean.CreateReturnRequestBean;
@@ -147,6 +148,10 @@ public class ReturnController extends BaseController {
 		// Validate is Status ID empty and correct value
 		if (returnItemReqBean.getStatusId() == null) {
 			throw new ServiceClientException("Invalid Status ID provided!");
+		}
+		int statusId = returnItemReqBean.getStatusId();
+		if (!(ReturnStatus.ACCEPTED.equals(statusId) || ReturnStatus.REJECTED.equals(statusId))) {
+			throw new ServiceClientException("Only allow to update to ACCEPTED / REJECTED!");
 		}
 	}
 }

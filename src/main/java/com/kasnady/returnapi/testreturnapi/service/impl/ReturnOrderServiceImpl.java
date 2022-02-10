@@ -190,6 +190,9 @@ public class ReturnOrderServiceImpl implements ReturnOrderService {
 		if (ro == null) {
 			logger.error("Return Order not found! Unable to update");
 			throw new ServiceClientException("Return Order not found! Unable to update");
+		} else if (ro.getReturnStatus().getId() == statusId) {
+			logger.error("Return Order status still the same! Not able to update");
+			throw new ServiceClientException("Return Order status already the same as requested!");
 		}
 
 		ro.setReturnStatus(rs.get());
