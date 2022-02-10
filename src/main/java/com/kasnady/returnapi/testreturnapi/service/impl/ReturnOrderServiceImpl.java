@@ -141,6 +141,27 @@ public class ReturnOrderServiceImpl implements ReturnOrderService {
 	}
 
 	/**
+	 * Get Return Orders
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public OrderReturnToken getReturnOrders(String returnToken) {
+		OrderReturnToken oReturnToken = null;
+		List<ReturnOrder> returnOrders = returnOrderRepo.findByReturnToken(returnToken);
+		if (returnOrders != null && !returnOrders.isEmpty()) {
+			oReturnToken = orderReturnTokenRepo.findOneByReturnToken(returnToken);
+
+			double summary = this.getReturnOrderRefundAmount(returnOrders);
+			oReturnToken.setTotalAmount(summary);
+			logger.info("ReturnToken: {} calculated with summary amount: {}", oReturnToken.getReturnToken(),
+					oReturnToken.getTotalAmount());
+			oReturnToken.setReturnOrders(returnOrders);
+		}
+		return oReturnToken;
+	}
+
+	/**
 	 * Load return status into DB
 	 */
 	public void loadStatus() {

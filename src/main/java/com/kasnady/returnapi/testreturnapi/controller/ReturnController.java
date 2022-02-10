@@ -8,6 +8,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -89,5 +91,18 @@ public class ReturnController extends BaseController {
 		} catch (ServiceClientException e) {
 			return badResponse(e.getMessage());
 		}
+	}
+
+	/**
+	 * Get created return transaction
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@GetMapping(value = { "/{id}" })
+	public ResponseEntity<Object> getReturnTxn(@PathVariable String id) {
+		logger.info("Called get return transaction for ReturnToken: {}", id);
+		OrderReturnToken oReturnToken = returnOrderService.getReturnOrders(id);
+		return succeedResponse(JsonUtil.gson.toJson(oReturnToken));
 	}
 }
